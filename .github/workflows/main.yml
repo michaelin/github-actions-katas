@@ -26,6 +26,8 @@ jobs:
           name: code
           path: .
           include-hidden-files: true
+      - name: Ensure unit test script is executable
+        run: chmod +x ci/unit-test-app.sh
       - name: Run unit tests
         run: ci/unit-test-app.sh
 
