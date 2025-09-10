@@ -9,23 +9,31 @@ jobs:
         uses: actions/checkout@v4       
       - name: Build application
         run: ci/build-app.sh
-      - name: Test
-        run: ci/unit-test-app.sh
       - uses: actions/upload-artifact@v4
         with: 
           name: code
           path: .
           include-hidden-files: true
 
-  Linting:
+  Test:
     runs-on: ubuntu-latest
+    container: gradle:6-jdk11
     needs: [Build]
     steps:
-      - name: Download code
+      - name: Download build artifact
         uses: actions/download-artifact@v4
-        with:
+        with: 
           name: code
           path: .
+          include-hidden-files: true
+      - name: Run unit tests
+        run: ci/unit-test-app.sh
+
+  Linting:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone down repository
+        uses: actions/checkout@v4
       - name: Run linting
         uses: super-linter/super-linter/slim@v7
         env:
