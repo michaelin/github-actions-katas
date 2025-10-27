@@ -49,9 +49,7 @@ def main():
         sys.exit(4)
 
     out = summarize(numbers)
-    # Print compact single-line JSON so callers (like workflow steps) can safely
-    # write it to $GITHUB_OUTPUT as a single key=value line without multiline file-commands.
-    print(json.dumps(out, separators=(",", ":")))
+    print(json.dumps(out))
 
 
 if __name__ == "__main__":
