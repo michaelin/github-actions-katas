@@ -28,6 +28,6 @@ jobs:
         id: format
         shell: bash
         run: |
-          printf '%s' "${{ steps.call-summary.outputs.summary }}" > summary.json || true
+          printf '%s' '${{ steps.call-summary.outputs.summary }}' > summary.json || true
           python3 ./ci/print_summary_text.py > summary_text.txt
           echo "summary_text=$(cat summary_text.txt)" >> $GITHUB_OUTPUT
