@@ -36,5 +36,7 @@ jobs:
         shell: bash
         run: |
           printf '%s' '${{ steps.call-summary.outputs.summary }}' > summary.json || true
+          echo "summary=$(cat summary.json)" >> $GITHUB_OUTPUT
+
           python3 ./ci/print_summary_text.py > summary_text.txt
           echo "summary_text=$(cat summary_text.txt)" >> $GITHUB_OUTPUT
