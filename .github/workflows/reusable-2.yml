@@ -8,12 +8,19 @@ on:
         type: string
         required: true
         default: '[1,2,3]'
+    outputs:
+      summary:
+        description: 'Summary produced by the composite action (JSON)'
+        value: ${{ jobs.summarize.outputs.summary }}
+      summary_text:
+        description: 'Human-readable summary text'
+        value: ${{ jobs.summarize.outputs.summary_text }}
 
 jobs:
   summarize:
     runs-on: ubuntu-latest
     outputs:
-      summary: ${{ steps.call-summary.outputs.summary }}
+      summary: ${{ steps.format.outputs.summary }}
       summary_text: ${{ steps.format.outputs.summary_text }}
     steps:
       - uses: actions/checkout@v4
