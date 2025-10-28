@@ -1,0 +1,44 @@
+name: Reusable summary workflow
+
+on:
+  workflow_call:
+    inputs:
+      numbers:
+        description: 'JSON array of numbers as a string'
+        type: string
+        required: true
+        default: '[1,2,3]''
+
+jobs:
+  summarize:
+    runs-on: ubuntu-latest
+    outputs:
+      summary: ${{ steps.call-summary.outputs.summary }}
+      summary_text: ${{ steps.format.outputs.summary_text }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Call summary composite-action
+        id: call-summary
+        uses: ./.github/actions/summary-action
+        with:
+          numbers: ${{ inputs.numbers }}
+        
+      - name: Format summary (create human-readable text)
+        id: format
+        shell: bash
+        run: |
+          printf '%s' "${{ steps.call-summary.outputs.summary }}" > summary.json || true
+          python3 - <<'PY' > summary_text.txt
+import json
+try:
+    s = json.load(open('summary.json'))
+except Exception:
+    print('Invalid summary JSON')
+    raise
+if not isinstance(s, dict) or s.get('count', 0) == 0:
+    print('No numbers provided')
+else:
+    print(f"count={s['count']}, sum={s['sum']}, avg={s['avg']:.2f}, min={s['min']}, max={s['max']}")
+PY
+          echo "summary_text=$(cat summary_text.txt)" >> $GITHUB_OUTPUT
