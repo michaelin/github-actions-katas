@@ -23,11 +23,11 @@
 <details>
   <summary>Solution</summary>
 
-```YAML
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true 
-```
+  ```YAML
+  concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true 
+  ```
 
 </details>
 
