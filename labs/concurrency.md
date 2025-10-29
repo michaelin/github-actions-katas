@@ -8,16 +8,25 @@
 2. **Create the Workflow Directory**  
    Ensure there is a `.github/workflows` directory in the root of your repository. If it does not exist, create it.
 
-3. **Add a New Workflow File**  
+   <details>
+      these are details
+      ```YAML
+      hey-there:
+      ```
+   </details>
+
+   No more details
+
+4. **Add a New Workflow File**  
    Inside the `.github/workflows` directory, create a new file. You can name it, for example, `concurency-lab.yml`.
 
-4. **Set the Workflow Name**  
+5. **Set the Workflow Name**  
    At the top of the file, specify a name for the workflow, such as “Concurrency Demo”.
 
-5. **Configure the Trigger**  
+6. **Configure the Trigger**  
    Set the workflow to be triggered manually using the `workflow_dispatch` event.
 
-6. **Define Concurrency Settings**  
+7. **Define Concurrency Settings**  
    Add a concurrency group that uses the workflow name and reference. Enable the option to cancel any in-progress runs if a new one starts.
 
 <details>
