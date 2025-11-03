@@ -242,6 +242,7 @@ this into a GitHub Action.
     ```yaml
     name: 'Hello World Docker Action'
     description: 'Greet someone and record the time'
+    
     inputs:
       who-to-greet:
         description: 'Who to greet'
@@ -251,11 +252,13 @@ this into a GitHub Action.
         description: 'Type of greeting (hello, hi, hey)'
         required: false
         default: 'Hello'
+    
     outputs:
       time:
         description: 'The time we greeted you'
       message:
         description: 'The full greeting message'
+    
     runs:
       using: 'docker'
       image: 'Dockerfile'
@@ -283,6 +286,42 @@ this into a GitHub Action.
     time=$(date)
     echo "time=$time" >> $GITHUB_OUTPUT
     echo "message=$message" >> $GITHUB_OUTPUT
+    ```
+
+    </details>
+
+3. **Optional:** Update your workflow to use the new input parameter and display the `message` output:
+
+    <details>
+    <summary>Solution</summary>
+
+    ```yaml
+    name: Test Custom Action
+
+    on:
+      push:
+        paths:
+          - 'hello-world-docker-action/**'
+      workflow_dispatch:
+
+    jobs:
+      test-action:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout repository
+            uses: actions/checkout@v4
+            
+          - name: Test custom action
+            id: hello
+            uses: ./hello-world-docker-action
+            with:
+              who-to-greet: 'GitHub Actions Student'
+              greeting-type: 'Hi'
+              
+          - name: Use the outputs
+            run: |
+              echo "The time was ${{ steps.hello.outputs.time }}"
+              echo "The message was: ${{ steps.hello.outputs.message }}"
     ```
 
     </details>
