@@ -45,8 +45,7 @@ the current time in `$GITHUB_OUTPUT`.
 
 2. Create an `entrypoint.sh` script inside this directory. This will contain the logic.
 
-3. Print a greeting using the input parameter to the console. Parameters are passed to the script
-   as regular shell script parameters in the order they are defined.
+3. Print a greeting using the input parameter to the console. GitHub Actions passes inputs to Docker container actions as command line arguments when you specify them in the `args` section of the action.yml file.
 
 4. Now capture the output from the Linux `date` command into a `$time` variable.
 
@@ -60,7 +59,7 @@ the current time in `$GITHUB_OUTPUT`.
     ```bash
     #!/bin/bash
 
-    echo "Hello, ${1}!"
+    echo "Hello, $1!"
     time=$(date)
     echo "time=$time" >> $GITHUB_OUTPUT
     ```
@@ -142,23 +141,30 @@ this into a GitHub Action.
 
 5. Configure the action to run using Docker with the local `Dockerfile`.
 
+6. Add an `args` section to pass the `who-to-greet` input as a command line argument to your container.
+
     <details>
     <summary>Solution</summary>
 
     ```yaml
     name: 'Hello World Docker Action'
     description: 'Greet someone and record the time'
+    
     inputs:
       who-to-greet:
         description: 'Who to greet'
         required: true
         default: 'World'
+    
     outputs:
       time:
         description: 'The time we greeted you'
+    
     runs:
       using: 'docker'
       image: 'Dockerfile'
+      args:
+        - ${{ inputs.who-to-greet }}
     ```
 
     </details>
@@ -253,6 +259,9 @@ this into a GitHub Action.
     runs:
       using: 'docker'
       image: 'Dockerfile'
+      args:
+        - ${{ inputs.greeting-type }}
+        - ${{ inputs.who-to-greet }}
     ```
 
     </details>
